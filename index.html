@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Danica Silcox | Personal Website</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #FF69B4;
+            --secondary-pink: #FFB6C1;
+            --light-pink: #FFF0F5;
+            --dark-pink: #DB7093;
+            --text-color: #4A4A4A;
+            --background-color: #FFF5F8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Improve touch targets on mobile */
+        a, button {
+            min-height: 44px;
+            min-width: 44px;
+            padding: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        section {
+            padding: 4rem 2rem;
+        }
+
+        .profile-section {
+            text-align: center;
+            padding: 6rem 2rem 4rem;
+            background: linear-gradient(135deg, var(--light-pink) 0%, var(--secondary-pink) 100%);
+        }
+
+        .profile-image {
+            width: 400px;
+            height: 400px;
+            border-radius: 15px;
+            object-fit: contain;
+            border: 8px solid white;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 2;
+            transition: transform 0.3s ease;
+        }
+        
+        .profile-image:hover {
+            transform: scale(1.02);
+        }
+
+        .floating-element {
+            position: absolute;
+            animation: float 3s ease-in-out infinite;
+            z-index: 1;
+            opacity: 0.6;
+        }
+
+        .book {
+            width: 40px;
+            height: 50px;
+            background: var(--primary-pink);
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 85% 100%, 85% 15%, 0 15%);
+        }
+
+        .music-note {
+            font-family: Arial;
+            color: var(--primary-pink);
+            font-size: 2rem;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .tennis-border {
+            border: 10px solid transparent;
+            border-image: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="none" stroke="%23FFB6C1" stroke-width="10"/><path d="M5,50 C5,25 95,75 95,50 C95,75 5,25 5,50" fill="none" stroke="%23FFB6C1" stroke-width="5"/></svg>') 30 stretch;
+            padding: 20px;
+        }
+
+        .piano-border {
+            border: 10px solid transparent;
+            border-image: url('data:image/svg+xml,<svg width="100" height="20" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="20" fill="white"/><rect x="0" y="0" width="10" height="20" fill="black"/><rect x="20" y="0" width="10" height="20" fill="black"/><rect x="40" y="0" width="10" height="20" fill="black"/><rect x="60" y="0" width="10" height="20" fill="black"/><rect x="80" y="0" width="10" height="20" fill="black"/></svg>') 30 stretch;
+            padding: 20px;
+        }
+
+        .interest-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+        }
+        
+        .profile-frame {
+            position: relative;
+        }
+        
+        .profile-frame::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: 
+                repeating-conic-gradient(
+                    from 0deg,
+                    var(--dark-pink) 0deg 30deg,
+                    transparent 30deg 60deg
+                );
+            border-radius: 50%;
+            z-index: 1;
+            animation: rotate 20s linear infinite;
+        }
+
+        .cheetah-accent {
+            position: absolute;
+            width: 100%;
+            height: 100px;
+            background-image: url('data:image/svg+xml,<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg"><circle cx="30" cy="30" r="15" fill="%23FF69B4" opacity="0.2"/></svg>'),
+                            url('data:image/svg+xml,<svg width="40" height="40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="10" fill="%23DB7093" opacity="0.15"/></svg>');
+            opacity: 0.1;
+        }
+
+        .tennis-decoration {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            background-image: url('data:image/svg+xml,<svg width="40" height="40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="18" fill="%23FFE135" stroke="%23fff" stroke-width="2"/><path d="M2,20 C2,10 38,30 38,20 C38,30 2,10 2,20" fill="none" stroke="%23fff" stroke-width="2"/></svg>');
+            animation: float 3s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .racquet-decoration {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            background-image: url('data:image/svg+xml,<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg"><ellipse cx="30" cy="20" rx="15" ry="20" fill="none" stroke="%23DB7093" stroke-width="2"/><line x1="30" y1="40" x2="30" y2="60" stroke="%23DB7093" stroke-width="2"/></svg>');
+            animation: swing 4s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes swing {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(15deg); }
+        }
+
+        .welcome-heading {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--dark-pink);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin: 2rem 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .decorative-pattern {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="30" fill="%23FFB6C1" opacity="0.1"/><circle cx="50" cy="50" r="20" fill="%23DB7093" opacity="0.1"/></svg>'),
+                url('data:image/svg+xml,<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg"><path d="M30,10 Q45,45 30,50 T30,90" fill="none" stroke="%23FF69B4" stroke-width="2" opacity="0.1"/></svg>');
+            opacity: 0.2;
+            z-index: 1;
+        }
+
+        .fun-icon {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            animation: float 3s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        .lipstick {
+            background-image: url('data:image/svg+xml,<svg width="40" height="40" xmlns="http://www.w3.org/2000/svg"><rect x="15" y="20" width="10" height="15" fill="%23FF1493"/><path d="M15,20 L25,20 L20,10 Z" fill="%23FF69B4"/></svg>');
+        }
+
+        .cake {
+            background-image: url('data:image/svg+xml,<svg width="40" height="40" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="20" width="20" height="15" fill="%23FFB6C1"/><circle cx="20" cy="17" r="3" fill="%23FF69B4"/><rect x="8" y="15" width="24" height="5" fill="%23FFC0CB"/></svg>');
+        }
+
+        .strawberry {
+            background-image: url('data:image/svg+xml,<svg width="40" height="40" xmlns="http://www.w3.org/2000/svg"><path d="M20,10 L25,15 L15,15 Z" fill="%2390EE90"/><path d="M15,15 Q20,40 25,15 Z" fill="%23FF0000"/></svg>');
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: 2rem auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,182,193,0.1);
+            pointer-events: none;
+        }
+
+        .video-message {
+            text-align: center;
+            padding: 1rem;
+            color: var(--dark-pink);
+            font-style: italic;
+        }
+
+        .welcome-video {
+            max-width: 600px;
+            margin: 2rem auto;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .interests-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 4rem 2rem;
+            background-color: white;
+        }
+
+        .interest-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .interest-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .interest-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .stories-section {
+            background: var(--light-pink);
+            padding: 4rem 2rem;
+        }
+
+        .story-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .halloween-section {
+            position: relative;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, var(--secondary-pink) 0%, var(--light-pink) 100%);
+        }
+
+        .pumpkin-decoration {
+            position: absolute;
+            width: 100px;
+            height: auto;
+        }
+
+        nav {
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: flex-end;
+            gap: 2rem;
+            list-style: none;
+            margin-right: 2rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--primary-color);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--accent-color);
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.5); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 0.5; }
+        }
+
+        .content {
+            text-align: center;
+            z-index: 1;
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease forwards;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: var(--text-color);
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease forwards 0.2s;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease forwards 0.4s;
+            box-shadow: 0 4px 15px rgba(0, 206, 201, 0.2);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 206, 201, 0.3);
+        }
+
+        .social-links {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease forwards 0.6s;
+        }
+
+        .social-links a {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-30px);
+            }
+            60% {
+                transform: translateY(-15px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3rem;
+            }
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            nav ul {
+                gap: 1rem;
+                margin-right: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Tennis ball and racquet decorations -->
+    <div class="tennis-decoration" style="top: 10%; left: 5%"></div>
+    <div class="tennis-decoration" style="top: 30%; right: 8%"></div>
+    <div class="tennis-decoration" style="bottom: 15%; left: 12%"></div>
+    <div class="racquet-decoration" style="top: 20%; right: 15%"></div>
+    <div class="racquet-decoration" style="bottom: 25%; left: 8%"></div>
+
+    <div class="container">
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="hobbies.html">My Hobbies</a></li>
+                <li><a href="game.html">Memory Game</a></li>
+            </ul>
+        </nav>
+
+        <section id="home" class="profile-section">
+            <!-- Decorative elements -->
+            <div class="decorative-pattern"></div>
+            <div class="fun-icon lipstick" style="top: 15%; right: 15%;"></div>
+            <div class="fun-icon cake" style="bottom: 20%; left: 10%;"></div>
+            <div class="fun-icon strawberry" style="top: 25%; left: 20%;"></div>
+            <div class="fun-icon lipstick" style="bottom: 30%; right: 25%;"></div>
+            <div class="fun-icon cake" style="top: 40%; right: 10%;"></div>
+            <div class="fun-icon strawberry" style="bottom: 15%; left: 30%;"></div>
+
+            <div class="floating-element book" style="top: 20%; left: 15%;"></div>
+            <div class="floating-element book" style="top: 30%; right: 20%;"></div>
+            <div class="floating-element music-note" style="top: 25%; left: 25%;">♪</div>
+            <div class="floating-element music-note" style="top: 40%; right: 25%;">♫</div>
+            <div class="floating-element music-note" style="top: 15%; right: 35%;">♩</div>
+            <img src="Images/IMG_2891 (2).jpg" alt="Danica Silcox" class="profile-image">
+            <h1 class="welcome-heading">Welcome to My Website</h1>
+            <p class="subtitle">by Danica Silcox</p>
+            
+            <div class="video-container">
+                <div class="video-overlay"></div>
+                <div class="welcome-audio-player">
+                    <button class="play-button" onclick="playWelcomeMessage()">
+                        <i class="fas fa-play"></i>
+                        Click to Play Welcome Message
+                    </button>
+                    <audio id="welcomeAudio">
+                        <source src="media/welcome-message.mp3" type="audio/mp3">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                <p class="video-message">"Hello everyone, welcome to my website. I hope you enjoy!"</p>
+            </div>
+            
+            <style>
+            .welcome-audio-player {
+                background: var(--light-pink);
+                padding: 2rem;
+                border-radius: 15px;
+                text-align: center;
+            }
+            
+            .play-button {
+                background: var(--primary-pink);
+                color: white;
+                border: none;
+                padding: 1rem 2rem;
+                border-radius: 25px;
+                font-size: 1.1rem;
+                cursor: pointer;
+                transition: transform 0.3s ease;
+            }
+            
+            .play-button:hover {
+                transform: scale(1.05);
+            }
+            </style>
+            
+            <script>
+            function playWelcomeMessage() {
+                const audio = document.getElementById('welcomeAudio');
+                audio.play();
+            }
+            </script>
+        </section>
+
+        <section id="interests" class="interests-section">
+            <div class="interest-card tennis-border">
+                <div class="content-flex">
+                    <div class="text-section">
+                        <h2>Tennis</h2>
+                        <p class="casual-text">Tennis has been a huge part of my life since middle school, and it's awesome to now be playing for UMD! I've put in countless hours of practice and hard work, which paid off when I made it to state all four years of high school. One of my proudest moments was getting third place at state during my senior year at the Nielsen Center. Tennis isn't just a sport for me - it's taught me so much about dedication, teamwork, and pushing myself to be better every day.</p>
+                        <div class="tennis-decorations">
+                            <img src="data:image/svg+xml,<svg width='30' height='30' xmlns='http://www.w3.org/2000/svg'><circle cx='15' cy='15' r='14' fill='%23FFD700' stroke='white'/><path d='M1,15 C1,8 29,22 29,15 C29,22 1,8 1,15' fill='none' stroke='white'/></svg>" class="floating-tennis-ball">
+                            <img src="data:image/svg+xml,<svg width='30' height='30' xmlns='http://www.w3.org/2000/svg'><circle cx='15' cy='15' r='14' fill='%23FFD700' stroke='white'/><path d='M1,15 C1,8 29,22 29,15 C29,22 1,8 1,15' fill='none' stroke='white'/></svg>" class="floating-tennis-ball" style="animation-delay: 0.5s">
+                        </div>
+                    </div>
+                    <div class="image-section">
+                        <img src="Images/tennis 1.JPG" alt="Tennis Competition" class="interest-image">
+                    </div>
+                </div>
+                <div class="tennis-gallery">
+                    <img src="Images/Tennis #2.jpg" alt="Tennis Action" class="interest-image">
+                    <img src="Images/tennis 1.JPG" alt="Tennis Match" class="interest-image">
+                </div>
+            </div>
+
+            <style>
+            .content-flex {
+                display: flex;
+                gap: 2rem;
+                margin-bottom: 2rem;
+                align-items: center;
+            }
+            .text-section {
+                flex: 1;
+            }
+            .image-section {
+                flex: 1;
+            }
+            .casual-text {
+                font-size: 1.1rem;
+                line-height: 1.6;
+                color: #333;
+                padding: 1rem;
+                border-left: 3px solid var(--primary-pink);
+                margin: 1rem 0;
+                background: rgba(255, 192, 203, 0.05);
+            }
+            </style>
+
+            <div class="interest-card piano-border">
+                <img src="Images/piano.JPG" alt="Piano Performance" class="interest-image">
+                <h2>Piano</h2>
+                <p class="formal-text">My journey with piano, commencing in kindergarten, represents a profound dedication to musical excellence and artistic expression. This foundational element of my life has transcended mere practice to become an integral medium of creative expression and personal development. Through years of dedicated study and performance, the piano has served as both a creative outlet and a source of intellectual stimulation, contributing significantly to my holistic development as an individual.</p>
+                <div class="piano-gallery">
+                    <img src="Images/IMG_2211.jpg.JPEG" alt="Piano Recital" class="interest-image">
+                    <img src="Images/IMG_3743.jpg" alt="Piano Performance" class="interest-image">
+                </div>
+            </div>
+        </section>
+
+        <section id="stories" class="stories-section">
+            <h2>Personal Stories</h2>
+            
+            <div class="story-container">
+                <h3>My Tennis Journey</h3>
+                <p>Tennis transcends being merely a sport in my life—it's an extraordinary journey that has shaped my character and defined my path to excellence. Each serve, every rally, and countless hours of practice have woven together to create a tapestry of determination and achievement. My four consecutive appearances at the state championships weren't just accomplishments; they were stepping stones leading to my proudest moment: securing third place at the prestigious Nielsen Center during my senior year. This achievement wasn't just about the trophy—it was a testament to the power of unwavering dedication and the beauty of pursuing one's passion relentlessly. Through tennis, I've learned that true success comes not just from talent, but from the perfect harmony of discipline, resilience, and an undying love for the game.</p>
+            </div>
+
+            <div class="story-container halloween-section">
+                <h3>Piano and Halloween Recitals</h3>
+                <img src="Images/pumpkin1.png" alt="Decorative Pumpkin" class="pumpkin-decoration" style="top: 20px; right: 20px;">
+                <img src="Images/pumpkin2.png" alt="Decorative Pumpkin" class="pumpkin-decoration" style="bottom: 20px; left: 20px;">
+                <p>One of my fondest memories revolves around the Halloween piano recitals. Each year, I would eagerly prepare for these special performances, combining my love for music with the festive spirit of Halloween. Dressed in creative costumes, I would take my place at the piano, surrounded by autumn decorations and glowing pumpkins. These recitals weren't just about showcasing musical talent; they were about bringing joy and entertainment to the audience while expressing my personality through both music and costume.</p>
+            </div>
+        </section>
+
+        <footer>
+            <div class="social-links">
+                <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
