@@ -1,126 +1,78 @@
-// UMD-themed card images
-const cardImages = [
-    'https://d.umn.edu/sites/d.umn.edu/files/styles/square/public/2021-09/UMD%20Primary%20Logo.jpg',
-    'https://d.umn.edu/sites/d.umn.edu/files/styles/square/public/2021-09/UMD%20Athletics%20Logo.jpg',
-    'https://d.umn.edu/sites/d.umn.edu/files/styles/square/public/2021-09/Champ%20Logo.jpg',
-    'https://d.umn.edu/sites/d.umn.edu/files/styles/square/public/2021-09/UMD%20Seal.jpg',
-    'https://d.umn.edu/sites/d.umn.edu/files/styles/square/public/2021-09/Bulldog%20Logo.jpg',
-    'https://d.umn.edu/sites/d.umn.edu/files/styles/square/public/2021-09/UMD%20Library.jpg'
-];
+// Game audio only: expose start/stop/toggle music for the inline game page.
+(function(){
+    let audioCtx = null;
+    let masterGain = null;
+    let melodyInterval = null;
+    let bassInterval = null;
+    let isMusicPlaying = false;
 
-let cards = [...cardImages, ...cardImages];
-let hasFlippedCard = false;
-let lockBoard = false;
-let firstCard, secondCard;
-let moves = 0;
-let matches = 0;
-let gameTimer;
-let gameStarted = false;
-let seconds = 0;
-
-// Shuffle cards
-function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
+    function initAudio(){
+        if(audioCtx) return;
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        masterGain = audioCtx.createGain();
+        masterGain.gain.value = 0.06; // low, respectful volume
+        masterGain.connect(audioCtx.destination);
     }
-    return array;
-}
 
-// Create game board
-function createBoard() {
-    const gameBoard = document.querySelector('.memory-game');
-    shuffle(cards).forEach((img, index) => {
-        const card = document.createElement('div');
-        card.classList.add('memory-card');
-        card.dataset.cardIndex = index;
-        card.dataset.cardImage = img;
-        
-        card.innerHTML = `
-            <img class="front-face" src="${img}" alt="UMD Card">
-            <div class="back-face"></div>
-        `;
-        
-        card.addEventListener('click', flipCard);
-        gameBoard.appendChild(card);
+    function playNote(freq, dur=0.28, type='sine', gainLevel=0.06){
+        try{
+            if(!audioCtx) initAudio();
+            const o = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            o.type = type;
+            o.frequency.value = freq;
+            g.gain.value = 0.0001;
+            o.connect(g); g.connect(masterGain);
+            const now = audioCtx.currentTime;
+            g.gain.exponentialRampToValueAtTime(Math.max(0.0001, gainLevel), now + 0.01);
+            g.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+            o.start(now);
+            o.stop(now + dur + 0.02);
+        }catch(e){ /* ignore */ }
+    }
+
+    const melody = [440, 523.25, 659.25, 880, 784, 659.25];
+
+    function startMusic(){
+        if(isMusicPlaying) return;
+        try{ initAudio(); if(audioCtx.state === 'suspended') audioCtx.resume(); }catch(e){}
+        let mi = 0;
+        melodyInterval = setInterval(()=>{
+            const f = melody[mi % melody.length];
+            const type = (mi % 2) ? 'triangle' : 'sine';
+            playNote(f, 0.35, type, 0.06);
+            if(mi % 2 === 0) playNote(f * 1.5, 0.28, 'sine', 0.03);
+            mi++;
+        }, 380);
+
+        let bi = 0;
+        const bassSeq = [110,130.81,98,146.83];
+        bassInterval = setInterval(()=>{ playNote(bassSeq[bi % bassSeq.length], 0.18, 'sine', 0.045); bi++; }, 760);
+
+        isMusicPlaying = true;
+        const btn = document.getElementById('musicToggle');
+        if(btn){ btn.textContent = 'Pause Music'; btn.setAttribute('aria-pressed','true'); }
+    }
+
+    function stopMusic(){
+        if(melodyInterval){ clearInterval(melodyInterval); melodyInterval = null; }
+        if(bassInterval){ clearInterval(bassInterval); bassInterval = null; }
+        isMusicPlaying = false;
+        const btn = document.getElementById('musicToggle');
+        if(btn){ btn.textContent = 'Music'; btn.setAttribute('aria-pressed','false'); }
+    }
+
+    function toggleMusic(){ if(isMusicPlaying) stopMusic(); else startMusic(); }
+
+    // expose to page code
+    window.startGameMusic = startMusic;
+    window.stopGameMusic = stopMusic;
+    window.toggleGameMusic = toggleMusic;
+
+    // wire the button if present
+    document.addEventListener('DOMContentLoaded', ()=>{
+        const btn = document.getElementById('musicToggle');
+        if(btn) btn.addEventListener('click', (e)=>{ e.preventDefault(); toggleMusic(); });
     });
-}
 
-function flipCard() {
-    if (lockBoard || this === firstCard) return;
-    
-    if (!gameStarted) {
-        startTimer();
-        gameStarted = true;
-    }
-
-    this.classList.add('flip');
-
-    if (!hasFlippedCard) {
-        hasFlippedCard = true;
-        firstCard = this;
-        return;
-    }
-
-    secondCard = this;
-    lockBoard = true;
-    
-    moves++;
-    document.getElementById('moveCount').textContent = moves;
-    
-    checkForMatch();
-}
-
-function checkForMatch() {
-    const isMatch = firstCard.dataset.cardImage === secondCard.dataset.cardImage;
-    
-    if (isMatch) {
-        matches++;
-        document.getElementById('matchCount').textContent = matches;
-        disableCards();
-        if (matches === cards.length / 2) {
-            endGame();
-        }
-    } else {
-        unflipCards();
-    }
-}
-
-function disableCards() {
-    firstCard.removeEventListener('click', flipCard);
-    secondCard.removeEventListener('click', flipCard);
-    resetBoard();
-}
-
-function unflipCards() {
-    setTimeout(() => {
-        firstCard.classList.remove('flip');
-        secondCard.classList.remove('flip');
-        resetBoard();
-    }, 1000);
-}
-
-function resetBoard() {
-    [hasFlippedCard, lockBoard] = [false, false];
-    [firstCard, secondCard] = [null, null];
-}
-
-function startTimer() {
-    gameTimer = setInterval(() => {
-        seconds++;
-        const minutes = Math.floor(seconds / 60);
-        const remainingSeconds = seconds % 60;
-        document.getElementById('timeCount').textContent = 
-            `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
-    }, 1000);
-}
-
-function endGame() {
-    clearInterval(gameTimer);
-    setTimeout(() => {
-        alert(`Congratulations! You completed the game in ${moves} moves and ${Math.floor(seconds / 60)}:${(seconds % 60).toString().padStart(2, '0')}!`);
-    }, 500);
-}
-
-// Initialize the game
-document.addEventListener('DOMContentLoaded', createBoard);
+})();
