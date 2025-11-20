@@ -126,6 +126,37 @@
             box-shadow: 0 8px 20px rgba(0,0,0,0.1);
             margin-bottom: 1.5rem;
         }
+
+        /* Remove extra spacing specifically for piano gallery images */
+        .piano-gallery {
+            display: flex;
+            gap: 0;
+            margin: 0;
+        }
+        .piano-gallery .interest-image {
+            margin: 0;
+            display: block;
+            height: auto;
+            width: 50%;
+            border-radius: 0 0 10px 10px;
+        }
+
+        /* Remove spacing between tennis photos */
+        .tennis-gallery {
+            display: flex;
+            gap: 0;
+            margin: 0;
+        }
+        .tennis-gallery .interest-image {
+            margin: 0;
+            width: 50%;
+            display: block;
+        }
+
+        /* Reduce extra bottom padding inside the piano card */
+        .interest-card.piano-border {
+            padding-bottom: 0.5rem;
+        }
         
         .profile-frame {
             position: relative;
@@ -502,7 +533,9 @@
             <ul>
                 <li><a href="#home">Home</a></li>
                 <li><a href="hobbies.html">My Hobbies</a></li>
-                <li><a href="game.html">Memory Game</a></li>
+                <li><a href="discover.html">Discover</a></li>
+                <li><a href="career.html">Career Interests</a></li>
+                <li><a href="resume.html">Resume</a></li>
             </ul>
         </nav>
 
@@ -522,53 +555,98 @@
             <div class="floating-element music-note" style="top: 40%; right: 25%;">♫</div>
             <div class="floating-element music-note" style="top: 15%; right: 35%;">♩</div>
             <img src="Images/IMG_2891 (2).jpg" alt="Danica Silcox" class="profile-image">
-            <h1 class="welcome-heading">Welcome to My Website</h1>
+            <h1 class="welcome-heading">Welcome to My Website 😊😊</h1>
             <p class="subtitle">by Danica Silcox</p>
             
             <div class="video-container">
-                <div class="video-overlay"></div>
-                <div class="welcome-audio-player">
-                    <button class="play-button" onclick="playWelcomeMessage()">
-                        <i class="fas fa-play"></i>
-                        Click to Play Welcome Message
-                    </button>
-                    <audio id="welcomeAudio">
-                        <source src="media/welcome-message.mp3" type="audio/mp3">
-                        Your browser does not support the audio element.
-                    </audio>
+                <div class="welcome-video" aria-hidden="false">
+                    <!-- Simple animated welcome 'video' built with CSS and SVG so it displays instead of a black video element -->
+                    <svg class="welcome-animation" viewBox="0 0 600 200" preserveAspectRatio="xMidYMid slice">
+                        <defs>
+                            <linearGradient id="g1" x1="0%" x2="100%">
+                                <stop offset="0%" stop-color="#FFB6C1" />
+                                <stop offset="50%" stop-color="#FF69B4" />
+                                <stop offset="100%" stop-color="#DB7093" />
+                            </linearGradient>
+                        </defs>
+                        <rect width="600" height="200" fill="url(#g1)"></rect>
+                        <g class="pulses" fill="rgba(255,255,255,0.08)">
+                            <circle cx="100" cy="100" r="40"></circle>
+                            <circle cx="300" cy="100" r="30"></circle>
+                            <circle cx="500" cy="100" r="45"></circle>
+                        </g>
+                        <text x="50%" y="55%" text-anchor="middle" font-size="30" fill="white" font-weight="700">Welcome 😊😊</text>
+                    </svg>
                 </div>
-                <p class="video-message">"Hello everyone, welcome to my website. I hope you enjoy!"</p>
+
+                <div class="welcome-controls" style="text-align:center; margin-top:12px;">
+                    <button id="welcomePlay" class="play-button"><i class="fas fa-play"></i> Play Welcome</button>
+                    <button id="welcomeAuto" class="play-button" style="margin-left:8px;"><i class="fas fa-bolt"></i> Try Auto-Play</button>
+                </div>
+
+                <p class="video-message">Welcome — click "Play Welcome" if you don't hear audio automatically.</p>
             </div>
-            
+
             <style>
-            .welcome-audio-player {
-                background: var(--light-pink);
-                padding: 2rem;
-                border-radius: 15px;
-                text-align: center;
-            }
-            
-            .play-button {
-                background: var(--primary-pink);
-                color: white;
-                border: none;
-                padding: 1rem 2rem;
-                border-radius: 25px;
-                font-size: 1.1rem;
-                cursor: pointer;
-                transition: transform 0.3s ease;
-            }
-            
-            .play-button:hover {
-                transform: scale(1.05);
-            }
+            .welcome-video { max-width: 700px; margin: 1.25rem auto; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 25px rgba(0,0,0,0.12); }
+            .welcome-animation { width: 100%; height: 200px; display:block; }
+            .welcome-animation .pulses circle { transform-origin: center; animation: pulseAnim 3s ease-in-out infinite; }
+            .welcome-animation .pulses circle:nth-child(1) { animation-delay: 0s; }
+            .welcome-animation .pulses circle:nth-child(2) { animation-delay: 0.5s; }
+            .welcome-animation .pulses circle:nth-child(3) { animation-delay: 1s; }
+            @keyframes pulseAnim { 0% { transform: scale(1); opacity: 0.9 } 50% { transform: scale(1.25); opacity: 0.5 } 100% { transform: scale(1); opacity: 0.9 } }
+
+            .play-button { background: var(--primary-pink); color: white; border: none; padding: 0.8rem 1.1rem; border-radius: 22px; font-size: 1rem; cursor: pointer; }
+            .play-button:hover { transform: translateY(-2px); }
             </style>
-            
+
             <script>
-            function playWelcomeMessage() {
-                const audio = document.getElementById('welcomeAudio');
-                audio.play();
+            // Web Speech API welcome voice — speak ONLY with a female-like voice when the user clicks.
+            function speakWelcome() {
+                const text = "Welcome to my website. I am so glad you all could make it. Please enjoy. My name is Danica Silcox and I am a sophomore at UMD. I have worked over the last couple months to create a website that really shows my strengths and who I am as a person. I am so excited for you all to check it out.";
+                if (!('speechSynthesis' in window)) {
+                    alert('Sorry, your browser does not support text-to-speech.');
+                    return;
+                }
+
+                const utter = new SpeechSynthesisUtterance(text);
+                utter.rate = 1;
+                utter.pitch = 1.25;
+
+                // Prefer a female voice when available. If no female-like voice is found, do NOT speak (to avoid a male voice).
+                const setVoice = () => {
+                    const voices = speechSynthesis.getVoices();
+                    if (voices && voices.length) {
+                        const femaleRegex = /female|woman|samantha|zira|victoria|audrey|anna|alloy|google|emma|olivia|zira|linda|sara|amy/i;
+                        const preferred = voices.find(v => femaleRegex.test(v.name)) || voices.find(v => femaleRegex.test(v.lang));
+                        if (preferred) utter.voice = preferred;
+                    }
+                };
+
+                setVoice();
+                // Some browsers load voices asynchronously — try to set the voice if voices appear later.
+                window.speechSynthesis.onvoiceschanged = () => {
+                    setVoice();
+                    // only speak automatically here if a female voice became available
+                    if (!utter.voice) return;
+                    document.querySelector('.welcome-animation').classList.add('playing');
+                    utter.onend = () => { document.querySelector('.welcome-animation').classList.remove('playing'); };
+                    speechSynthesis.cancel();
+                    speechSynthesis.speak(utter);
+                };
+
+                // If no female voice is selected now, do not speak. This prevents a male fallback voice from playing.
+                if (!utter.voice) return;
+
+                // start animation and speak
+                document.querySelector('.welcome-animation').classList.add('playing');
+                utter.onend = () => { document.querySelector('.welcome-animation').classList.remove('playing'); };
+                speechSynthesis.cancel();
+                speechSynthesis.speak(utter);
             }
+
+            document.getElementById('welcomePlay').addEventListener('click', () => speakWelcome());
+            // Do not auto-speak on page load. The user must click 'Play Welcome' to hear the female voice.
             </script>
         </section>
 
@@ -584,12 +662,12 @@
                         </div>
                     </div>
                     <div class="image-section">
-                        <img src="Images/tennis 1.JPG" alt="Tennis Competition" class="interest-image">
+                    <img src="Images/tennis%201.JPG" alt="" class="interest-image">
                     </div>
                 </div>
                 <div class="tennis-gallery">
-                    <img src="Images/Tennis #2.jpg" alt="Tennis Action" class="interest-image">
-                    <img src="Images/tennis 1.JPG" alt="Tennis Match" class="interest-image">
+                    <img src="Images/Tennis%20%232.jpg" alt="" class="interest-image">
+                    <img src="Images/tennis%201.JPG" alt="" class="interest-image">
                 </div>
             </div>
 
@@ -615,34 +693,55 @@
                 margin: 1rem 0;
                 background: rgba(255, 192, 203, 0.05);
             }
+            /* Piano-specific enhancements */
+            .piano-enhanced {
+                position: relative;
+                padding: 1rem 1rem 0.5rem 1rem;
+                overflow: visible;
+            }
+            .piano-decor {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                display: flex;
+                gap: 8px;
+                opacity: 0.9;
+            }
+            .piano-decor svg { width: 28px; height: 28px; }
+            .formal-text {
+                font-size: 1rem;
+                color: #333;
+                margin-bottom: 0.6rem;
+            }
+            .piano-gallery { display:flex; gap:0; margin:0; }
+            .piano-gallery .interest-image { width:50%; margin:0; height:auto; display:block; border-radius:0 0 10px 10px; }
             </style>
 
-            <div class="interest-card piano-border">
-                <img src="Images/piano.JPG" alt="Piano Performance" class="interest-image">
+            <div class="interest-card piano-border piano-enhanced">
+                <div class="piano-decor" aria-hidden="true">
+                    <!-- small decorative music notes -->
+                    <svg viewBox="0 0 24 24"><path fill="#DB7093" d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z"/></svg>
+                    <svg viewBox="0 0 24 24"><path fill="#FF69B4" d="M9 3v12a3 3 0 1 0 2 0V6h4V3H9z"/></svg>
+                    <svg viewBox="0 0 24 24"><path fill="#FFB6C1" d="M5 13v7h2v-5h3v-2H5z"/></svg>
+                </div>
+                <img src="Images/piano.JPG" alt="" class="interest-image">
                 <h2>Piano</h2>
-                <p class="formal-text">My journey with piano, commencing in kindergarten, represents a profound dedication to musical excellence and artistic expression. This foundational element of my life has transcended mere practice to become an integral medium of creative expression and personal development. Through years of dedicated study and performance, the piano has served as both a creative outlet and a source of intellectual stimulation, contributing significantly to my holistic development as an individual.</p>
+                <p class="formal-text">I started piano in kindergarten and still practice regularly. Playing helps me focus and express myself — I play a mix of classical pieces and contemporary songs. I also enjoy accompanying friends at recitals and experimenting with arranging music.</p>
+                <p class="formal-text">Practice routine: I warm up with scales and arpeggios for 20–30 minutes, then work on repertoire and technical exercises. I aim for musicality and clarity — not just speed — and I record myself regularly to track progress.</p>
+                <p class="formal-text">Favorite pieces & goals: I love Debussy and Chopin, and I'm currently working on learning a Chopin nocturne and a short Rachmaninoff piece. My goal is to perform more chamber music and to write small piano arrangements for friends' recitals.</p>
+                <p class="formal-text">Community & performances: I’ve played at local community recitals and school events. I also enjoy teaching friends simple arrangements and helping with accompaniment; sharing music is one of my favorite parts of playing.</p>
+                <p class="formal-text">How I practice musically: beyond mechanics, I spend time listening deeply to recordings and analyzing how phrasing, dynamics, and pedal affect the overall shape of a piece. I keep a practice journal where I note tempo markings, troublesome passages, and small, measurable goals for each session.</p>
+                <p class="formal-text">Collaborations: I like working with singers and small ensembles — accompanying a vocalist forces me to be flexible, sensitive to breathing, and responsive to subtle tempo shifts. These collaborations have taught me accompaniment skills that I now use regularly in school performances.</p>
+                <p class="formal-text">Personal projects: lately I’ve been arranging short modern songs for solo piano and creating simple backing tracks to practice improvisation. My long-term dream is to compose a short suite for piano inspired by the seasons in Minnesota.</p>
+                <p class="formal-text">Why piano matters to me: playing is a place to process emotions, celebrate, and connect with other people. Whether I’m preparing for a recital or playing casually for friends, piano gives me a way to communicate when words are not enough.</p>
                 <div class="piano-gallery">
-                    <img src="Images/IMG_2211.jpg.JPEG" alt="Piano Recital" class="interest-image">
-                    <img src="Images/IMG_3743.jpg" alt="Piano Performance" class="interest-image">
+                    <img src="Images/IMG_2211.jpg.JPEG" alt="" class="interest-image">
+                    <img src="Images/IMG_3743.jpg" alt="" class="interest-image">
                 </div>
             </div>
         </section>
 
-        <section id="stories" class="stories-section">
-            <h2>Personal Stories</h2>
-            
-            <div class="story-container">
-                <h3>My Tennis Journey</h3>
-                <p>Tennis transcends being merely a sport in my life—it's an extraordinary journey that has shaped my character and defined my path to excellence. Each serve, every rally, and countless hours of practice have woven together to create a tapestry of determination and achievement. My four consecutive appearances at the state championships weren't just accomplishments; they were stepping stones leading to my proudest moment: securing third place at the prestigious Nielsen Center during my senior year. This achievement wasn't just about the trophy—it was a testament to the power of unwavering dedication and the beauty of pursuing one's passion relentlessly. Through tennis, I've learned that true success comes not just from talent, but from the perfect harmony of discipline, resilience, and an undying love for the game.</p>
-            </div>
-
-            <div class="story-container halloween-section">
-                <h3>Piano and Halloween Recitals</h3>
-                <img src="Images/pumpkin1.png" alt="Decorative Pumpkin" class="pumpkin-decoration" style="top: 20px; right: 20px;">
-                <img src="Images/pumpkin2.png" alt="Decorative Pumpkin" class="pumpkin-decoration" style="bottom: 20px; left: 20px;">
-                <p>One of my fondest memories revolves around the Halloween piano recitals. Each year, I would eagerly prepare for these special performances, combining my love for music with the festive spirit of Halloween. Dressed in creative costumes, I would take my place at the piano, surrounded by autumn decorations and glowing pumpkins. These recitals weren't just about showcasing musical talent; they were about bringing joy and entertainment to the audience while expressing my personality through both music and costume.</p>
-            </div>
-        </section>
+        <!-- Personal stories moved to the Hobbies page per request -->
 
         <footer>
             <div class="social-links">
@@ -653,3 +752,4 @@
     </div>
 </body>
 </html>
+
